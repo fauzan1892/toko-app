@@ -7,6 +7,11 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta content="Toko Codekop Menjual berbagai macam hijab, jaket, aksesoris dan pakaian islami pria dan wanita" name="description">
+        <meta content="{{ $title ?? 'App Toko' }}" name="keywords">
+        <meta property="og:locale" content="ID_id"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:image" content="{{ asset('assets/img/keranjang.png') }}">
         <!-- Bootstrap CSS -->
         <link rel="shortcut icon" href="{{ asset('assets/img/keranjang.png') }}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -72,6 +77,7 @@
                         <i class="fas fa-envelope-square me-2"></i> customer@hijup.com
                         <br>
                         <i class="fas fa-map-marker-alt me-2"></i> Pejaten Barat Raya No. 2B Pasar Minggu, Jakarta Selatan, 12510
+                        <br><br>
                     </div>
                     <div class="col-sm-4">
                         <h4>Tetap Terhubung Dengan Kami</h4>

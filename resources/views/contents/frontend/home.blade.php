@@ -9,10 +9,10 @@
 <!-- end promosi -->
 <!-- carausel -->
 <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
-    <ol class="carousel-indicators">
+    {{-- <ol class="carousel-indicators">
         <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active"></li>
         <li data-bs-target="#carouselId" data-bs-slide-to="1"></li>
-    </ol>
+    </ol> --}}
     <div class="carousel-inner" role="listbox">
         <div class="carousel-item active">
             <img src="{{asset('assets/img/1.jpg')}}" class="img-fluid w-100" alt="First slide">
