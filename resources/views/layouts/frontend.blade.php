@@ -74,9 +74,9 @@
                         <p>08:00 - 17:00 WIB</p>
                         (Senin - Jumat)
                         <br>
-                        <i class="fas fa-envelope-square me-2"></i> customer@hijup.com
+                        <i class="fas fa-envelope-square me-2"></i> info@codekop.com
                         <br>
-                        <i class="fas fa-map-marker-alt me-2"></i> Pejaten Barat Raya No. 2B Pasar Minggu, Jakarta Selatan, 12510
+                        <i class="fas fa-map-marker-alt me-2"></i> Ujung Harapan Kav. Daruttaqwa RT 005/014 No. 102 Kel. Bahagia, Kec. Babelan, Kab. Bekasi
                         <br><br>
                     </div>
                     <div class="col-sm-4">
