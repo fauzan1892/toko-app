@@ -19,13 +19,12 @@
             <div class="container">
                 @if(!empty(auth()->user()->id))
                 <a class="navbar-brand" href="{{ route('admin.index') }}"><b>Toko Codekop</b></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon text-dark pt-2"><i class="fas fa-bars"></i></span>
+                </button>
                 @else 
                 <a class="navbar-brand" href="{{ url('/') }}"><b>Toko Codekop</b></a>
                 @endif
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
