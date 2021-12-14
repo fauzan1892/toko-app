@@ -7,6 +7,8 @@
             <div class="product">
                 <h4 class="mb-4"><b>{{ $title }}</b></h4>
                 @include('components.frontend.produk_list')
+                <br>
+                {{ $produk->links() }}
             </div>
         </div>
     </div>
