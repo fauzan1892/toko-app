@@ -20,8 +20,8 @@ Route::get('kategori/{category}', [Controllers\HomeController::class, 'kategori'
 Route::get('search', [Controllers\HomeController::class, 'search'])->name('home.search');
 Route::get('home', [Controllers\HomeController::class, 'redir_admin'])->name('home.redir_admin');
 
-Auth::routes(['register' => false,'reset' => false]);
-Route::group(['middleware' => ['revalidate']], function() {
+Route::group(['middleware' => 'revalidate'], function() {
+    Auth::routes(['register' => false,'reset' => false]);
     Route::get('admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
     // route produk
     Route::prefix('admin/produk')->group(function () {

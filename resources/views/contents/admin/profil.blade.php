@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             {{ alertbs_form($errors) }}
-            <div class="card">
-                <div class="card bg-primary text-white card-rounded">
+            <div class="card card-rounded">
+                <div class="card-header bg-primary text-white">
                     <h5 class="card-title pt-2"> <i class="fas fa-edit me-1"></i> Ubah Profil</h5>
                 </div>
                 <div class="card-body">
