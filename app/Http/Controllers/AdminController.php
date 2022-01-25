@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * Codekop Toko Online
+ * 
+ * @link       https://www.codekop.com/
+ * @version    1.0.1
+ * @copyright  (c) 2021 
+ * 
+ * File      : AdminController.php
+ * Web Name  : Toko Online
+ * Developer : Fauzan Falah 
+ * E-mail    : fauzancodekop@gmail.com / fauzan1892@codekop.com
+ * 
+ * 
+**/
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
