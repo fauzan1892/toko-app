@@ -1,11 +1,11 @@
 @extends('layouts.frontend')
 @section('content')
 <!-- promosi -->
-<div class="promosi pt-3 pb-3">
+{{-- <div class="promosi pt-3 pb-3">
     <div class="container text-center blink_me">
         HIJUB GREAT DEALS 12.12, Get Extra Disc. Rp120.000,- Min. Purchase Rp200.000,-. Kode GS-120
     </div>
-</div>
+</div> --}}
 <!-- end promosi -->
 <!-- carausel -->
 <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
@@ -15,10 +15,10 @@
     </ol> --}}
     <div class="carousel-inner" role="listbox">
         <div class="carousel-item active">
-            <img src="{{asset('assets/img/1.jpg')}}" class="img-fluid w-100" alt="First slide">
+            <img src="{{asset('assets/img/photo1.png')}}" class="img-fluid w-100" id="gambar_slider" alt="First slide">
         </div>
         <div class="carousel-item">
-            <img src="{{asset('assets/img/2.jpg')}}" class="img-fluid w-100" alt="Second slide">
+            <img src="{{asset('assets/img/photo2.png')}}" class="img-fluid w-100" id="gambar_slider" alt="Second slide">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
@@ -44,7 +44,7 @@
                     <div class="col-sm-7">
                         <div class="official-content">
                             <h4><b>Offline Stores</b></h4>
-                            <p>Saat ini kami memiliki 7 toko yang tersebar di seluruh Indonesia dan akan terus berkembang</p>
+                            <p>Saat ini kami memiliki 2 toko yang tersebar di seluruh jabodetabek dan akan terus berkembang</p>
                         </div>
                     </div>
                     <div class="col-sm-5">

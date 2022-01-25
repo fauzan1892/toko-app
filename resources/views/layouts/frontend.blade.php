@@ -22,7 +22,7 @@
         <!-- navbar -->
         <nav class="navbar navbar-expand-md navbar-custom shadow-sm py-3 fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}"><b>Toko Codekop</b></a>
+                <a class="navbar-brand" href="{{ url('/') }}"><b>{{ config('app.name') }}</b></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon text-dark pt-2"><i class="fas fa-bars"></i></span>
                 </button>
@@ -60,6 +60,9 @@
         </nav>
         <!-- end navbar -->
         <!-- main -->
+        @php 
+            $profil = App\Models\User::where('id', 1)->first();
+        @endphp
         <div class="clearfix  mt-5 pt-4"></div>
         <div class="main">
             @yield('content')
@@ -71,12 +74,10 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <h4>Butuh Bantuan</h4>
-                        <p>08:00 - 17:00 WIB</p>
-                        (Senin - Jumat)
+                        <p class="pt-2">08:00 - 17:00 WIB / (Senin - Jumat)</p>
+                        <i class="fas fa-envelope-square me-2"></i> {{ $profil->email }}
                         <br>
-                        <i class="fas fa-envelope-square me-2"></i> info@codekop.com
-                        <br>
-                        <i class="fas fa-map-marker-alt me-2"></i> Ujung Harapan Kav. Daruttaqwa RT 005/014 No. 102 Kel. Bahagia, Kec. Babelan, Kab. Bekasi
+                        <i class="fas fa-map-marker-alt me-2"></i> {{ $profil->address }}
                         <br><br>
                     </div>
                     <div class="col-sm-4">
@@ -93,7 +94,9 @@
         </div>
         <div class="copyright">
             <div class="container text-center">
-                Copyright &copy; 2021 Toko Codekop All Reserved
+                Copyright &copy; <?= date('Y');?> {{ config('app.name') }} All Reserved
+                <br>
+                Web Belajar Laravel Codekop.com
             </div>
         </div>
         <!-- end footer -->

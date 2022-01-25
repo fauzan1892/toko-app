@@ -28,8 +28,8 @@ class AdminController extends Controller
     public function produk(Request $request)
     {
         $reqsearch = $request->get('search');  
-        $produkdb = Produk::leftJoin('tbl_kategori','tbl_produk.id_kategori','=','tbl_kategori.id')
-            ->select('tbl_kategori.nama_kategori','tbl_produk.*')
+        $produkdb = Produk::leftJoin('kategori','produk.id_kategori','=','kategori.id')
+            ->select('kategori.nama_kategori','produk.*')
             ->when($reqsearch, function($query, $reqsearch){
                 $search = '%'.$reqsearch.'%';
                 return $query->whereRaw('nama_kategori like ? or nama_produk like ?', [
@@ -234,6 +234,8 @@ class AdminController extends Controller
                 User::findOrFail(auth()->user()->id)->update([
                     'name'          => $request->get("name"),
                     'email'         => $request->get("email"),
+                    'phone'         => $request->get("phone"),
+                    'address'       => $request->get("address"),
                     'password'      => Hash::make($request->get("password")),
                     'updated_at'    => date('Y-m-d H:i:s'),
                 ]);

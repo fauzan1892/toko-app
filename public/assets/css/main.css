@@ -214,3 +214,26 @@ body{
     padding-bottom:10px;
     font-weight: bold;
 }
+
+#gambar_slider{
+    height:450px !important;
+    object-fit: cover;
+}
+
+/* Tablet */
+@media only screen and (min-width: 671px) and (max-width: 960px) {
+    
+    #gambar_slider{
+        height:350px !important;
+        object-fit: cover;
+    }
+}
+
+
+/* Mobile */
+@media only screen and (max-width: 670px) {
+    #gambar_slider{
+        height:250px !important;
+        object-fit: cover;
+    }
+}

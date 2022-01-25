@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
 use App\Models\Produk;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -17,8 +18,8 @@ class HomeController extends Controller
     {
 
         $reqsearch = $request->get('search');  
-        $produkdb = Produk::leftJoin('tbl_kategori','tbl_produk.id_kategori','=','tbl_kategori.id')
-                    ->select('tbl_kategori.nama_kategori','tbl_produk.*');
+        $produkdb = Produk::leftJoin('kategori','produk.id_kategori','=','kategori.id')
+                    ->select('kategori.nama_kategori','produk.*');
         $data = [
             'title'     => 'Toko Codekop',
             'kategori'  => Kategori::All(),
@@ -30,8 +31,8 @@ class HomeController extends Controller
     public function kategori(Request $request, $id)
     {
         $edit = Kategori::findOrFail($id);
-        $produkdb = Produk::leftJoin('tbl_kategori','tbl_produk.id_kategori','=','tbl_kategori.id')
-                    ->select('tbl_kategori.nama_kategori','tbl_produk.*')->where('tbl_produk.id_kategori', $id);
+        $produkdb = Produk::leftJoin('kategori','produk.id_kategori','=','kategori.id')
+                    ->select('kategori.nama_kategori','produk.*')->where('produk.id_kategori', $id);
         $data = [
             'title'     => $edit->nama_kategori,
             'kategori'  => Kategori::All(),
@@ -43,8 +44,8 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $reqsearch = $request->get('keyword');  
-        $produkdb = Produk::leftJoin('tbl_kategori','tbl_produk.id_kategori','=','tbl_kategori.id')
-            ->select('tbl_kategori.nama_kategori','tbl_produk.*')
+        $produkdb = Produk::leftJoin('kategori','produk.id_kategori','=','kategori.id')
+            ->select('kategori.nama_kategori','produk.*')
             ->when($reqsearch, function($query, $reqsearch){
                 $search = '%'.$reqsearch.'%';
                 return $query->whereRaw('nama_kategori like ? or nama_produk like ?', [
@@ -62,14 +63,15 @@ class HomeController extends Controller
     public function produk(Request $request, $id)
     {
         $reqsearch = $request->get('keyword');  
-        $produkdb = Produk::leftJoin('tbl_kategori','tbl_produk.id_kategori','=','tbl_kategori.id')
-            ->select('tbl_kategori.nama_kategori','tbl_produk.*')->where('tbl_produk.id', $id)->first();
+        $produkdb = Produk::leftJoin('kategori','produk.id_kategori','=','kategori.id')
+            ->select('kategori.nama_kategori','produk.*')->where('produk.id', $id)->first();
 
         if(!$produkdb){ abort('404'); }
 
         $data = [
             'title'     => $produkdb->nama_produk,
             'kategori'  => Kategori::All(),
+            'profil_toko' => User::find(1),
             'edit'      => $produkdb,
         ];
         return view('contents.frontend.produk', $data);
