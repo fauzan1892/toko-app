@@ -72,7 +72,7 @@ class AdminController extends Controller
     {
         $validator = \Validator::make($request->all(),[
             "id_kategori"   => "required",
-            "gambar"        => "required|image|max:1024",
+            "gambar"        => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             "nama_produk"   => "required",
             "deskripsi"     => "required",
             "harga_jual"    => "required",
@@ -115,7 +115,7 @@ class AdminController extends Controller
             $produkdb = Produk::findorFail($request->get('id'));
             if($request->file('gambar')){
                 $validator = \Validator::make($request->all(),[
-                    "gambar" => "required|image|max:1024",
+                    "gambar" => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ]);
                 if($validator->passes()){
                     $image = $request->file('gambar');
