@@ -79,13 +79,23 @@ class AdminController extends Controller
         ]);
 
         if($validator->passes()){
-
-            $image = $request->file('gambar');
-            $input['imagename'] = 'produk_'.time().'.'.$image->getClientOriginalExtension();
-    
-            $destinationPath = storage_path('app/public/gambar');
-            $image->move($destinationPath, $input['imagename']);
-
+            $gambar = null;
+            if($request->file('gambar')){
+                $validator = \Validator::make($request->all(),[
+                    "gambar" => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
+                if($validator->passes()){
+                    $image = $request->file('gambar');
+                    $input['imagename'] = 'produk_'.time().'.'.$image->getClientOriginalExtension();
+            
+                    $destinationPath = storage_path('app/public/gambar');
+                    $image->move($destinationPath, $input['imagename']);
+                    $gambar = $input['imagename'];
+                }
+                else{
+                    return redirect()->back()->withErrors($validator)->with("failed"," Gagal Update Data ! ");
+                }
+            }
             Produk::insert([
                 'id_kategori'   => $request->get("id_kategori"),
                 'gambar'        => $input['imagename'],
