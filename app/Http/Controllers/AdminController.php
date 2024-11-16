@@ -41,8 +41,8 @@ class AdminController extends Controller
     public function produk(Request $request)
     {
         $reqsearch = $request->get('search');  
-        $produkdb = Produk::leftJoin('kategori','produk.id_kategori','=','kategori.id')
-            ->select('kategori.nama_kategori','produk.*')
+        $produkdb = Produk::leftJoin('tbl_kategori','tbl_produk.id_kategori','=','tbl_kategori.id')
+            ->select('tbl_kategori.nama_kategori','tbl_produk.*')
             ->when($reqsearch, function($query, $reqsearch){
                 $search = '%'.$reqsearch.'%';
                 return $query->whereRaw('nama_kategori like ? or nama_produk like ?', [
@@ -70,93 +70,118 @@ class AdminController extends Controller
     // data proses produk 
     public function create_produk(Request $request)
     {
-        $validator = \Validator::make($request->all(),[
+        $validator = \Validator::make($request->all(), [
             "id_kategori"   => "required",
-            "gambar"        => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            "gambar"        => 'required|file|max:2048',
             "nama_produk"   => "required",
             "deskripsi"     => "required",
             "harga_jual"    => "required",
         ]);
-
-        if($validator->passes()){
-            $gambar = null;
-            if($request->file('gambar')){
-                $validator = \Validator::make($request->all(),[
-                    "gambar" => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                ]);
-                if($validator->passes()){
-                    $image = $request->file('gambar');
-                    $input['imagename'] = 'produk_'.time().'.'.$image->getClientOriginalExtension();
-            
-                    $destinationPath = storage_path('app/public/gambar');
-                    $image->move($destinationPath, $input['imagename']);
-                    $gambar = $input['imagename'];
-                }
-                else{
-                    return redirect()->back()->withErrors($validator)->with("failed"," Gagal Update Data ! ");
-                }
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->with("failed", "Gagal Insert Data!");
+        }
+    
+        $gambar = null;
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+    
+            // Cek ekstensi file
+            $extension = $file->getClientOriginalExtension();
+            $validExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
+    
+            if (!in_array(strtolower($extension), $validExtensions)) {
+                return redirect()->back()->with("failed", "File bukan gambar yang valid! Ekstensi salah.");
             }
-            Produk::insert([
-                'id_kategori'   => $request->get("id_kategori"),
-                'gambar'        => $input['imagename'],
-                'nama_produk'   => $request->get("nama_produk"),
-                'deskripsi'     => $request->get("deskripsi"),
-                'harga_jual'    => $request->get("harga_jual"),
-                'created_at'    => date('Y-m-d H:i:s'),
-            ]);
-            return redirect()->back()->with("success"," Berhasil Insert Data ! ");
+    
+            // Validasi MIME type manual menggunakan finfo
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $file->getPathname());
+            finfo_close($finfo);
+    
+            $validMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+            if (!in_array($mimeType, $validMimeTypes)) {
+                return redirect()->back()->with("failed", "File bukan gambar yang valid! MIME type salah.");
+            }
+    
+            // Generate nama file unik
+            $customName = 'produk_' . time() . '.' . $extension;
+    
+            // Simpan file
+            $file->move(storage_path('app/public/gambar'), $customName);
+            $gambar = $customName;
         }
-        else{
-            return redirect()->back()->withErrors($validator)->with("failed"," Gagal Insert Data ! ");
-        }
+    
+        // Simpan data ke database
+        Produk::create([
+            'id_kategori'   => $request->get("id_kategori"),
+            'gambar'        => $gambar,
+            'nama_produk'   => $request->get("nama_produk"),
+            'deskripsi'     => $request->get("deskripsi"),
+            'harga_jual'    => $request->get("harga_jual"),
+            'created_at'    => now(),
+        ]);
+    
+        return redirect()->back()->with("success", "Berhasil Insert Data!");
     }
 
     public function update_produk(Request $request)
     {
-        $validator = \Validator::make($request->all(),[
-            "id"            => "required",
+        $validator = \Validator::make($request->all(), [
+            "id"            => "required|exists:tbl_produk,id",
             "id_kategori"   => "required",
             "nama_produk"   => "required",
             "deskripsi"     => "required",
             "harga_jual"    => "required",
         ]);
-
-        if($validator->passes()){
-            $produkdb = Produk::findorFail($request->get('id'));
-            if($request->file('gambar')){
-                $validator = \Validator::make($request->all(),[
-                    "gambar" => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                ]);
-                if($validator->passes()){
-                    $image = $request->file('gambar');
-                    $input['imagename'] = 'produk_'.time().'.'.$image->getClientOriginalExtension();
-            
-                    $destinationPath = storage_path('app/public/gambar');
-                    $image->move($destinationPath, $input['imagename']);
-                    $gambar = $input['imagename'];
-                }
-                else{
-                    return redirect()->back()->withErrors($validator)->with("failed"," Gagal Update Data ! ");
-                }
-            }
-            else{
-                $gambar = $produkdb->gambar;
-            }
-
-            $produkdb->update([
-                'id_kategori'   => $request->get("id_kategori"),
-                'gambar'        => $gambar,
-                'nama_produk'   => $request->get("nama_produk"),
-                'deskripsi'     => $request->get("deskripsi"),
-                'harga_jual'    => $request->get("harga_jual"),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ]);
-
-            return redirect()->back()->with("success"," Berhasil Update Data Produk ".$request->get("nama_produk").' !');
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->with("failed", "Gagal Update Data!");
         }
-        else{
-            return redirect()->back()->withErrors($validator)->with("failed"," Gagal Update Data ! ");
+    
+        $produkdb = Produk::findOrFail($request->get('id'));
+        $gambar = $produkdb->gambar;
+    
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+    
+            // Cek ekstensi file
+            $extension = $file->getClientOriginalExtension();
+            $validExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
+    
+            if (!in_array(strtolower($extension), $validExtensions)) {
+                return redirect()->back()->with("failed", "File bukan gambar yang valid! Ekstensi salah.");
+            }
+    
+            // Validasi MIME type manual menggunakan finfo
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $file->getPathname());
+            finfo_close($finfo);
+    
+            $validMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+            if (!in_array($mimeType, $validMimeTypes)) {
+                return redirect()->back()->with("failed", "File bukan gambar yang valid! MIME type salah.");
+            }
+    
+            // Generate nama file unik
+            $customName = 'produk_' . time() . '.' . $extension;
+    
+            // Simpan file
+            $file->move(storage_path('app/public/gambar'), $customName);
+            $gambar = $customName;
         }
+    
+        // Update data di database
+        $produkdb->update([
+            'id_kategori'   => $request->get("id_kategori"),
+            'gambar'        => $gambar,
+            'nama_produk'   => $request->get("nama_produk"),
+            'deskripsi'     => $request->get("deskripsi"),
+            'harga_jual'    => $request->get("harga_jual"),
+            'updated_at'    => now(),
+        ]);
+    
+        return redirect()->back()->with("success", "Berhasil Update Data Produk " . $request->get("nama_produk") . '!');
     }
 
     public function delete_produk(Request $request, $id)
