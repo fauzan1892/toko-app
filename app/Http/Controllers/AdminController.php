@@ -128,7 +128,7 @@ class AdminController extends Controller
     public function update_produk(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            "id"            => "required|exists:tbl_produk,id",
+            "id"            => "required|exists:produk,id",
             "id_kategori"   => "required",
             "nama_produk"   => "required",
             "deskripsi"     => "required",
