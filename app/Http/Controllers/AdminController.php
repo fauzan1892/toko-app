@@ -41,8 +41,8 @@ class AdminController extends Controller
     public function produk(Request $request)
     {
         $reqsearch = $request->get('search');  
-        $produkdb = Produk::leftJoin('tbl_kategori','tbl_produk.id_kategori','=','tbl_kategori.id')
-            ->select('tbl_kategori.nama_kategori','tbl_produk.*')
+        $produkdb = Produk::leftJoin('kategori','produk.id_kategori','=','kategori.id')
+            ->select('kategori.nama_kategori','produk.*')
             ->when($reqsearch, function($query, $reqsearch){
                 $search = '%'.$reqsearch.'%';
                 return $query->whereRaw('nama_kategori like ? or nama_produk like ?', [
